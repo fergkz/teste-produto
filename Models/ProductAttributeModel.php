@@ -1,6 +1,6 @@
 <?php
 
-class ProductAttribute extends Model {
+class ProductAttributeModel extends Model {
 
     protected $id;
     protected $product_id;

@@ -33,3 +33,6 @@ define("DB_USERNAME", "root");
 define("DB_PASSWORD", "");
 // DEFINES DB CONNECTION DATABASE NAME
 define("DB_NAME", "teste-madeira");
+
+// DEFINES DEFAULT PAGINATION QUANTITY
+define("PAGINATION_QUANTITY", 10);

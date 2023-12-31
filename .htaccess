@@ -1,9 +1,0 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    # DETERMINES THAT THE REDIRECT WILL OCCUR IF THE DIR DOESNT EXIST
-    RewriteCond %{REQUEST_FILENAME} !-d
-    # DETERMINES THAT THE REDIRECT WILL OCCUR IF THE FILE DOESNT EXIST
-    RewriteCond %{REQUEST_FILENAME} !-f
-    # REDIRECT ALL ROUTES TO INDEX
-    RewriteRule ^ index.php [L]
-</IfModule>

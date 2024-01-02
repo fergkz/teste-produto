@@ -8,7 +8,7 @@ export default function ProductLayout({ children }) {
   return (
     <>
       <header>
-        <Navbar fluid className="border-b border-gray-300 py-3">
+        <Navbar fluid className="border-b border-gray-300 py-4">
           <Navbar.Brand>
             <h1 className="italic font-medium">Teste Madeira Madeira</h1>
           </Navbar.Brand>
@@ -26,7 +26,9 @@ export default function ProductLayout({ children }) {
           </Navbar.Collapse>
         </Navbar>
       </header>
-      {children}
+      <main className="py-4 bg-gray-100">
+        <div className="container">{children}</div>
+      </main>
     </>
   );
 }

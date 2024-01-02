@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 export default function ProductLayout({ children }) {
   const pathname = usePathname();
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <header>
-        <Navbar fluid className="border-b border-gray-300 py-4">
+        <Navbar className="border-b border-gray-300 py-4">
           <Navbar.Brand>
             <h1 className="italic font-medium">Teste Madeira Madeira</h1>
           </Navbar.Brand>
@@ -26,9 +26,9 @@ export default function ProductLayout({ children }) {
           </Navbar.Collapse>
         </Navbar>
       </header>
-      <main className="py-4 bg-gray-100">
+      <main className="py-4 bg-gray-100 flex-1">
         <div className="container">{children}</div>
       </main>
-    </>
+    </div>
   );
 }

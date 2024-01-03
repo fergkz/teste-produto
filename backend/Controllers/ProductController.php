@@ -89,6 +89,7 @@ class ProductController extends Controller {
         foreach ($listAssets as $asset) {
             $jsonAssets[] = [
                 'id' => $asset->id,
+                'type' => $asset->type,
                 'path' => $asset->path,
             ];
         }

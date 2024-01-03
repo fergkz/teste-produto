@@ -16,6 +16,7 @@ CREATE TABLE `product_attributes` (
 CREATE TABLE `product_assets` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `product_id` int(10) unsigned NOT NULL,
+  `type` varchar(255) NOT NULL,
   `path` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_assets_FK` (`product_id`),

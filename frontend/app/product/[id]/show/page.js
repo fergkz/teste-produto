@@ -1,5 +1,7 @@
 "use client";
 
+import AssetPreview from "@/components/AssetPreview";
+import Grid from "@/components/Grid";
 import PageSubtitle from "@/components/PageSubtitle";
 import PageTitle from "@/components/PageTitle";
 import Section from "@/components/Section";
@@ -42,17 +44,27 @@ export default function ProductShow({ params }) {
         <>
           <PageTitle>Visualizar Produto: {product.id}</PageTitle>
           <PageSubtitle>Atributos:</PageSubtitle>
-          <ul className="pl-4 list-disc">
-            {product.attributes?.length > 0 ? (
-              product.attributes.map((attribute, index) => (
+          {product.attributes?.length > 0 ? (
+            <ul className="pb-4 pl-4 list-disc">
+              {product.attributes.map((attribute, index) => (
                 <li key={index}>
                   <b>{attribute.title}</b>: {attribute.value}
                 </li>
+              ))}
+            </ul>
+          ) : (
+            <b className="block pb-4">Nenhum</b>
+          )}
+          <PageSubtitle>Arquivos:</PageSubtitle>
+          <Grid gridCols="grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+            {product.assets?.length > 0 ? (
+              product.assets.map((asset, index) => (
+                <AssetPreview key={index} asset={asset} />
               ))
             ) : (
-              <li className="font-medium">Nenhum</li>
+              <b className="block">Nenhum</b>
             )}
-          </ul>
+          </Grid>
         </>
       )}
     </Section>

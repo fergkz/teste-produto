@@ -20,7 +20,9 @@ export default function ProductList() {
         .then((response) => response.data)
         .then((data) => setDataList(data));
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
+      alert(error);
     }
   };
 
@@ -31,8 +33,6 @@ export default function ProductList() {
   useEffect(() => {
     fetchData();
   }, [currentPage]);
-
-  console.log(dataList.totalPages);
 
   return (
     <Section>

@@ -3,6 +3,7 @@
 import Section from "@/components/Section";
 import axios from "axios";
 import { Button, Pagination, Spinner, Table } from "flowbite-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function ProductList() {
@@ -51,14 +52,18 @@ export default function ProductList() {
                   dataList.data.map((value, index) => (
                     <Table.Row
                       key={index}
-                      className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                    >
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                      <Table.Cell className="font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {value.id}
                       </Table.Cell>
                       <Table.Cell>
                         <Button.Group>
-                          <Button color="gray">Visualizar</Button>
+                          <Button
+                            as={Link}
+                            href={`/product/${value.id}/show`}
+                            color="gray">
+                            Visualizar
+                          </Button>
                           <Button color="gray">Editar</Button>
                           <Button color="gray">Deletar</Button>
                         </Button.Group>
@@ -69,8 +74,7 @@ export default function ProductList() {
                   <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                     <Table.Cell
                       colSpan={2}
-                      className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
-                    >
+                      className="font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       Nenhum produto encontrado
                     </Table.Cell>
                   </Table.Row>

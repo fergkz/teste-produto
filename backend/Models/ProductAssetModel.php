@@ -29,4 +29,10 @@ class ProductAssetModel extends Model {
 
         return $this->connection->lastInsertId();
     }
+
+    public function delete() {
+        $pstmt = $this->connection->prepare('DELETE FROM product_assets WHERE id = :id');
+        $pstmt->bindValue("id", $this->id);
+        $pstmt->execute() or die(print_r($pstmt->errorInfo()));
+    }
 }

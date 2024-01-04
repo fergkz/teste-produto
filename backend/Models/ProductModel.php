@@ -40,4 +40,10 @@ class ProductModel extends Model {
 
         return $this->connection->lastInsertId();
     }
+
+    public function delete() {
+        $pstmt = $this->connection->prepare('DELETE FROM products WHERE id = :id');
+        $pstmt->bindValue("id", $this->id);
+        $pstmt->execute() or die(print_r($pstmt->errorInfo()));
+    }
 }

@@ -33,4 +33,11 @@ class ProductModel extends Model {
 
         return $row;
     }
+
+    public function insert() {
+        $pstmt = $this->connection->prepare('INSERT INTO products VALUES ()');
+        $pstmt->execute() or die(print_r($pstmt->errorInfo()));
+
+        return $this->connection->lastInsertId();
+    }
 }

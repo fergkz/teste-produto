@@ -65,7 +65,12 @@ export default function ProductList() {
                             Visualizar
                           </Button>
                           <Button color="gray">Editar</Button>
-                          <Button color="gray">Deletar</Button>
+                          <Button
+                            as={Link}
+                            href={`/product/${value.id}/delete`}
+                            color="gray">
+                            Deletar
+                          </Button>
                         </Button.Group>
                       </Table.Cell>
                     </Table.Row>

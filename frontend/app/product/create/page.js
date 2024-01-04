@@ -22,7 +22,7 @@ registerPlugin(
 
 export default function ProductCreate() {
   const [attributes, setAttributes] = useState([]);
-  const [files, setFiles] = useState([]);
+  const [assets, setAssets] = useState([]);
   const [isFilepondReady, setIsFilepondReady] = useState(false);
 
   const addAttribute = () => {
@@ -48,7 +48,7 @@ export default function ProductCreate() {
         formData.append(`title[${index}]`, attribute.title);
         formData.append(`value[${index}]`, attribute.value);
       });
-      files.forEach((file, index) => {
+      assets.forEach((file, index) => {
         formData.append(`file[${index}]`, file.file);
       });
 
@@ -96,8 +96,8 @@ export default function ProductCreate() {
         <div className={!isFilepondReady ? "hidden" : ""}>
           <FilePond
             allowMultiple
-            files={files}
-            onupdatefiles={setFiles}
+            files={assets}
+            onupdatefiles={setAssets}
             imagePreviewHeight={150}
             oninit={() => setIsFilepondReady(true)}
             acceptedFileTypes={["image/png", "image/jpeg", "application/pdf"]}

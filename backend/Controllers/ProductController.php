@@ -13,6 +13,11 @@ class ProductController extends Controller {
                     self::get();
                 }
                 break;
+            case "POST":
+                if (isset(ARRAY_REQUEST_URI[1]) && ARRAY_REQUEST_URI[1] == "store") {
+                    self::store();
+                }
+                break;
         }
     }
 
@@ -50,7 +55,7 @@ class ProductController extends Controller {
         // RETURNS THE ARRAY CONVERTED TO JSON
         echo json_encode($json);
     }
-    
+
     private static function get() {
         // CREATES A NEW INSTACE OF PRODUCT MODEL
         $product = new ProductModel();
@@ -100,5 +105,23 @@ class ProductController extends Controller {
             'attributes' => $jsonAttributes,
             'assets' =>  $jsonAssets,
         ]);
+    }
+
+    private static function store() {
+        $product = new ProductModel();
+        $product->id = $product->insert();
+
+        if (
+            isset($_POST['title']) && is_array($_POST['title'])
+            && isset($_POST['value']) && is_array($_POST['value'])
+        ) {
+            foreach ($_POST['title'] as $keyT => $title) {
+                $productAttribute = new ProductAttributeModel();
+                $productAttribute->product_id = $product->id;
+                $productAttribute->title = $title;
+                $productAttribute->value = $_POST['value'][$keyT];
+                $productAttribute->insert();
+            }
+        }
     }
 }

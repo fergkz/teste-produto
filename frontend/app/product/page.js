@@ -64,7 +64,12 @@ export default function ProductList() {
                             color="gray">
                             Visualizar
                           </Button>
-                          <Button color="gray">Editar</Button>
+                          <Button
+                            as={Link}
+                            href={`/product/${value.id}/edit`}
+                            color="gray">
+                            Editar
+                          </Button>
                           <Button
                             as={Link}
                             href={`/product/${value.id}/delete`}

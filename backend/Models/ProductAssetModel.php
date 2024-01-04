@@ -19,4 +19,14 @@ class ProductAssetModel extends Model {
 
         return $listAssets;
     }
+
+    public function insert() {
+        $pstmt = $this->connection->prepare('INSERT INTO product_assets (product_id, `type`, `path`) VALUES (:product_id, :type, :path)');
+        $pstmt->bindValue("product_id", $this->product_id);
+        $pstmt->bindValue("type", $this->type);
+        $pstmt->bindValue("path", $this->path);
+        $pstmt->execute() or die(print_r($pstmt->errorInfo()));
+
+        return $this->connection->lastInsertId();
+    }
 }

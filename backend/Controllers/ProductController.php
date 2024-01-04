@@ -14,8 +14,21 @@ class ProductController extends Controller {
                 }
                 break;
             case "POST":
-                if (isset(ARRAY_REQUEST_URI[1]) && ARRAY_REQUEST_URI[1] == "store") {
+                if (
+                    isset(ARRAY_REQUEST_URI[1]) && filter_var(ARRAY_REQUEST_URI[1], FILTER_VALIDATE_INT)
+                    && isset(ARRAY_REQUEST_URI[2]) && ARRAY_REQUEST_URI[2] == "update"
+                ) {
+                    self::update();
+                } else if (isset(ARRAY_REQUEST_URI[1]) && ARRAY_REQUEST_URI[1] == "store") {
                     self::store();
+                }
+                break;
+            case "PUT":
+                if (
+                    isset(ARRAY_REQUEST_URI[1]) && filter_var(ARRAY_REQUEST_URI[1], FILTER_VALIDATE_INT)
+                    && isset(ARRAY_REQUEST_URI[2]) && ARRAY_REQUEST_URI[2] == "update"
+                ) {
+                    self::update();
                 }
                 break;
             case "DELETE":
@@ -96,14 +109,14 @@ class ProductController extends Controller {
         // SET ASSET PRODUCT_ID AS CURRENT PRODUCT ID
         $productAsset->product_id = $product->id;
         // RETRIEVE ALL ASSETS RELATED TO THE PRODUCT
-        $listAssets = $productAsset->selectByProduct();
+        $listAssets = (array) $productAsset->selectByProduct();
         // ITERATES OVER ASSETS LIST TO STRUCTURE ITS DATA TO ARRAY / JSON FORMAT 
         $jsonAssets = [];
         foreach ($listAssets as $asset) {
             $jsonAssets[] = [
                 'id' => $asset->id,
                 'type' => $asset->type,
-                'path' => $asset->path,
+                'path' => $_SERVER['HTTP_HOST'] . "/" . BACKEND_FOLDER_NAME . $asset->path,
             ];
         }
 
@@ -155,6 +168,81 @@ class ProductController extends Controller {
                     $productAsset->path = "/uploads/" . $filename . "." . $extension;
                     $productAsset->insert();
                 }
+            }
+        }
+    }
+
+    private static function update() {
+        $product = new ProductModel();
+        $product->id = ARRAY_REQUEST_URI[1];
+        if (!$product = $product->select()) {
+            throw new Exception("Product does not exists.");
+        }
+
+        $productAttribute = new ProductAttributeModel();
+        $productAttribute->product_id = $product->id;
+        $listAttributes = (array) $productAttribute->selectByProduct();
+        $listAttributesIdsToKeep = [];
+
+        if (
+            isset($_POST['title']) && is_array($_POST['title'])
+            && isset($_POST['value']) && is_array($_POST['value'])
+        ) {
+            foreach ($_POST['title'] as $keyT => $title) {
+                $productAttribute = new ProductAttributeModel();
+                $productAttribute->product_id = $product->id;
+                $productAttribute->title = $title;
+                $productAttribute->value = $_POST['value'][$keyT];
+                if ($productAttribute->id = $_POST['id'][$keyT] ?: NULL) {
+                    $listAttributesIdsToKeep[] = $productAttribute->id;
+                    $productAttribute->update();
+                } else {
+                    $productAttribute->insert();
+                }
+            }
+        }
+
+        foreach ($listAttributes as $attribute) {
+            if (!in_array($attribute->id, $listAttributesIdsToKeep)) {
+                $attribute->delete();
+            }
+        }
+
+        $productAsset = new ProductAssetModel();
+        $productAsset->product_id = $product->id;
+        $listAssets = (array) $productAsset->selectByProduct();
+        $listAssetsIdsToKeep = isset($_POST['currentFile']) && is_array($_POST['currentFile']) ? $_POST['currentFile'] : [];
+
+        if (
+            isset($_FILES['file']) && is_array($_FILES['file'])
+        ) {
+            foreach ($_FILES['file']['name'] as $keyF => $name) {
+                $filename =  pathinfo($name, PATHINFO_FILENAME);
+                $extension =  pathinfo($name, PATHINFO_EXTENSION);
+                $nameDoesNotExists = false;
+                $assetNumber = 1;
+                while (!$nameDoesNotExists) {
+                    if (file_exists(DIR_UPLOADS . DIRECTORY_SEPARATOR . $filename . "." . $extension)) {
+                        $filename = $filename . " ({$assetNumber})";
+                        $assetNumber++;
+                    } else {
+                        $nameDoesNotExists = true;
+                    }
+                }
+
+                if (move_uploaded_file($_FILES['file']["tmp_name"][$keyF], DIR_UPLOADS . DIRECTORY_SEPARATOR . $filename . "." . $extension)) {
+                    $productAsset = new ProductAssetModel();
+                    $productAsset->product_id = $product->id;
+                    $productAsset->type = $_FILES['file']["type"][$keyF];
+                    $productAsset->path = "/uploads/" . $filename . "." . $extension;
+                    $productAsset->insert();
+                }
+            }
+        }
+
+        foreach ($listAssets as $asset) {
+            if (!in_array($asset->id, $listAssetsIdsToKeep)) {
+                $asset->delete();
             }
         }
     }

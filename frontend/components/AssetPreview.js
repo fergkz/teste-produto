@@ -5,7 +5,7 @@ export default function AssetPreview({ asset }) {
   );
 
   const handleClick = async () => {
-    const response = await fetch(`${process.env.backendUrl}${asset.path}`);
+    const response = await fetch(`//${asset.path}`);
 
     if (response.status !== 200) {
       console.error(response.status, response.statusText);
@@ -27,7 +27,7 @@ export default function AssetPreview({ asset }) {
         {asset.type.includes("image") ? (
           <img
             className="object-contain object-center w-full h-full"
-            src={`${process.env.backendUrl}${asset.path}`}
+            src={`//${asset.path}`}
           />
         ) : (
           <svg

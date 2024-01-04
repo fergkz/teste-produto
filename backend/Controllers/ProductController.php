@@ -18,6 +18,14 @@ class ProductController extends Controller {
                     self::store();
                 }
                 break;
+            case "DELETE":
+                if (
+                    isset(ARRAY_REQUEST_URI[1]) && filter_var(ARRAY_REQUEST_URI[1], FILTER_VALIDATE_INT)
+                    && isset(ARRAY_REQUEST_URI[2]) && ARRAY_REQUEST_URI[2] == "delete"
+                ) {
+                    self::delete();
+                }
+                break;
         }
     }
 
@@ -108,8 +116,6 @@ class ProductController extends Controller {
     }
 
     private static function store() {
-        // var_dump($_POST, $_FILES);
-        // exit;
         $product = new ProductModel();
         $product->id = $product->insert();
 
@@ -151,5 +157,15 @@ class ProductController extends Controller {
                 }
             }
         }
+    }
+
+    private static function delete() {
+        $product = new ProductModel();
+        $product->id = ARRAY_REQUEST_URI[1];
+        if (!$product = $product->select()) {
+            throw new Exception("Product does not exists.");
+        }
+
+        $product->delete();
     }
 }

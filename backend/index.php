@@ -3,9 +3,6 @@
 // BOOTSTRAP THE APPLICATION
 require_once __DIR__ . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "bootstrap.php";
 
-// var_dump(ARRAY_REQUEST_URI);
-// exit;
-
 try {
     switch (ARRAY_REQUEST_URI[0]) {
         case "product":

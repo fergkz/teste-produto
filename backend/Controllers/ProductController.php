@@ -108,6 +108,8 @@ class ProductController extends Controller {
     }
 
     private static function store() {
+        // var_dump($_POST, $_FILES);
+        // exit;
         $product = new ProductModel();
         $product->id = $product->insert();
 
@@ -121,6 +123,32 @@ class ProductController extends Controller {
                 $productAttribute->title = $title;
                 $productAttribute->value = $_POST['value'][$keyT];
                 $productAttribute->insert();
+            }
+        }
+        if (
+            isset($_FILES['file']) && is_array($_FILES['file'])
+        ) {
+            foreach ($_FILES['file']['name'] as $keyF => $name) {
+                $filename =  pathinfo($name, PATHINFO_FILENAME);
+                $extension =  pathinfo($name, PATHINFO_EXTENSION);
+                $nameDoesNotExists = false;
+                $assetNumber = 1;
+                while (!$nameDoesNotExists) {
+                    if (file_exists(DIR_UPLOADS . DIRECTORY_SEPARATOR . $filename . "." . $extension)) {
+                        $filename = $filename . " ({$assetNumber})";
+                        $assetNumber++;
+                    } else {
+                        $nameDoesNotExists = true;
+                    }
+                }
+
+                if (move_uploaded_file($_FILES['file']["tmp_name"][$keyF], DIR_UPLOADS . DIRECTORY_SEPARATOR . $filename . "." . $extension)) {
+                    $productAsset = new ProductAssetModel();
+                    $productAsset->product_id = $product->id;
+                    $productAsset->type = $_FILES['file']["type"][$keyF];
+                    $productAsset->path = "/uploads/" . $filename . "." . $extension;
+                    $productAsset->insert();
+                }
             }
         }
     }

@@ -1,29 +1,23 @@
-# Descrição do Teste: Desenvolvimento de um sistema de portfólio de produtos
+# Teste Madeira Madeira: Desenvolvimento de um sistema de portfólio de produtos
 
-## Objetivo:
-Desenvolver um sistema de gerenciamento de portfólio de produtos com as seguintes funcionalidades:
- - Um produto pode possuir N atributos e novos atributos podem ser incluiídos a qualquer momento (os atributos são dinâmicos)
- - Um produto pode possuir N assets (imagens e documentos)
+## Como executar o projeto localmente
 
-### Back-end (PHP):
- - Crie uma API RESTful para operações CRUD de produtos.
- - Evite o uso de frameworks completos como o Laravel, pois nosso objetivo é avaliar a sua organização de projeto e conhecimento de como os componentes integram entre si, assim o uso de frameworks pode prejudicar nossa avaliação, uma vez que os mesmos facilitam grande parte da configuração necessária.
- 
-### Front-end (React):
- - Crie uma interface de usuário usando React para interagir com a API.
- - Exiba uma lista de produtos, permitindo visualização unitária, adição, edição e exclusão de produtos.
- - Utilize componentes React reutilizáveis.
- - Diferente do back-end aqui você é livre para usar qualquer biblioteca que quiser.
+### 1. Obtenha os arquivos do projeto
 
-### Docker (opcional):
-Dockerize a aplicação, fornecendo instruções claras para a construção e execução do contêiner.
+Primeiramente, obtenha os arquivos do projeto e os extraia em um pasta em seu ambiente de desenvolvimento (por padrão o projeto está pré-configurado para utilizar Apache).
 
-## Instruções:
- - O código deve ser versionado com Git e hospeado no GitHub.
- - Inclua instruções claras sobre como configurar e executar a aplicação localmente.
- - Opcional: forneça alguns testes básicos para mostrar a funcionalidade.
+### 2. Crie e importe o SQL do Banco de Dados
 
-## Avaliação:
-A avaliação será baseada na eficácia da implementação, organização do código, modelagem do banco de dados, uso adequado dos conceitos padrões e boas práticas de desenvolvimento e segurança.
+Com os arquivos do projeto já na sua máquina, crie um Banco de Dados MySQL (por padrão chamado de `teste-madeira`) e execute/importe o arquivo `teste-madeira-schema.sql` presente na pasta `/backend`
 
-Depois de finalizar o desafio abra um pull request nesse repositório.
+### 3. Valide / configure as variáveis de ambiente do backend e frontend
+
+Acesse o arquivo `/backend/includes/defines.php` e verifique se as **Variáveis de Ambiente** estão de acordo com seu ambiente de desenvolvimento.
+Depois, acesse o arquivo `/frontend/next.config.js` e verifique se a url da variável **backendUrl** representa corretamente o link de acesso do backend de seu projeto.
+
+### 4. Instale as dependências e inicialize o servidor frontend do projeto
+
+Acesse a pasta `/frontend` em seu terminal e execute **`npm install`** para instalar as dependências do frontend.
+Assim que finalizada a instalação, execute **`npm run dev`** para iniciar o servidor node.js responsável pelo frontend do projeto.
+
+Se tudo ocorrer conforme o esperado, o terminal deverá manter-se aberto e, acessando a url do servidor (normalmente [http://localhost:3000](http://localhost:3000)), será possível navegar no sistema.
